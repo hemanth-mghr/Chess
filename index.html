@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>Chess</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div id="app">
+    
+    <!-- MENU SCREEN -->
+    <section id="menu" class="screen active">
+      <h1 class="title">Chess</h1>
+
+      <div class="menu-grid">
+        <div class="selector-card">
+          <label class="selector-label">AI Opponent</label>
+          <div class="visual-preview">
+            <div id="aiAvatar" class="avatar-emoji">🤖</div>
+          </div>
+          <div class="selector-controls">
+            <button class="arrow" id="aiPrev">&#10094;</button>
+            <div style="display:flex; flex-direction:column; align-items:center;">
+              <div class="selector-value" id="aiName">Beginner Bot</div>
+              <div class="selector-sub" id="aiDesc">Level 1 - Easy</div>
+            </div>
+            <button class="arrow" id="aiNext">&#10095;</button>
+          </div>
+        </div>
+
+        <div class="selector-card">
+          <label class="selector-label">Board Theme</label>
+          <div class="visual-preview">
+            <div class="board-preview-box" id="themePreview"></div>
+          </div>
+          <div class="selector-controls">
+            <button class="arrow" id="themePrev">&#10094;</button>
+            <div class="selector-value" id="themeName">Gray & White</div>
+            <button class="arrow" id="themeNext">&#10095;</button>
+          </div>
+        </div>
+
+        <div class="selector-card">
+          <label class="selector-label">Play As</label>
+          <div class="visual-preview">
+             <div id="sideAvatar" class="avatar-emoji piece white">♙</div>
+          </div>
+          <div class="selector-controls">
+            <button class="arrow" id="sidePrev">&#10094;</button>
+            <div class="selector-value" id="sideName">White</div>
+            <button class="arrow" id="sideNext">&#10095;</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-actions">
+        <button id="startBtn" class="primary-btn play-btn">Play Match</button>
+        <button id="openCreditsBtn" class="credits-btn">Credits</button>
+      </div>
+    </section>
+
+    <!-- GAME SCREEN -->
+    <section id="game" class="screen">
+
+      <button id="backBtn" class="ghost-btn corner-btn corner-left">&#8592; Menu</button>
+      <button id="resignBtn" class="ghost-btn corner-btn corner-right">Resign</button>
+
+      <div class="game-container">
+
+        <div id="turnIndicator" class="turn-indicator">White to move</div>
+
+        <div class="board-row">
+
+          <div class="side-panel">
+            <div class="profile profile-vertical">
+              <div class="profile-avatar" id="gameAiAvatar">🤖</div>
+              <div class="profile-info">
+                <span class="profile-name" id="gameAiName">AI Opponent</span>
+                <span class="profile-role">Opponent</span>
+              </div>
+            </div>
+            <div id="aiCaptures" class="side-captures"></div>
+          </div>
+
+          <div class="board-wrap">
+            <div id="board"></div>
+          </div>
+
+          <div class="side-panel">
+            <div class="profile profile-vertical">
+              <div class="profile-avatar">👤</div>
+              <div class="profile-info">
+                <span class="profile-name">You</span>
+                <span class="profile-role">Player</span>
+              </div>
+            </div>
+            <div id="playerCaptures" class="side-captures"></div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+    <!-- MODALS -->
+    <div id="creditsModal" class="modal hidden">
+      <div class="modal-content">
+        <h2>Credits</h2>
+        <div class="credits-text">
+          <p><strong>Game Developer:</strong> Hemanth Naik.M</p>
+          <p><strong>Game developed in:</strong> HTML, CSS, Java Script</p>
+          <p><strong>Game deployed in:</strong> Vercel</p>
+          <p><strong>Github repo link:</strong> <a href="#" target="_blank">Repository Link</a></p>
+        </div>
+        <button id="closeCreditsBtn" class="primary-btn">Close</button>
+      </div>
+    </div>
+
+    <div id="promotion" class="modal hidden">
+      <div class="modal-content">
+        <h2>Promote Pawn</h2>
+        <div class="promo-options">
+          <button data-piece="q" class="promo piece white">♕</button>
+          <button data-piece="r" class="promo piece white">♖</button>
+          <button data-piece="b" class="promo piece white">♗</button>
+          <button data-piece="n" class="promo piece white">♘</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="endModal" class="modal hidden">
+      <div class="modal-content">
+        <h2 id="endTitle">Game Over</h2>
+        <p id="endMessage"></p>
+        <div class="end-buttons">
+          <button id="endMenuBtn" class="ghost-btn">Menu</button>
+          <button id="endRematchBtn" class="primary-btn">Rematch</button>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
