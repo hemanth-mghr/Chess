@@ -30,6 +30,7 @@ html, body {
 }
 
 /* ---------- Modern Moving Chess-Box Pattern ---------- */
+/* ---------- Mobile-Optimized Hardware-Accelerated Chess Background ---------- */
 body {
   background-color: #a9a9a9;
 }
@@ -41,6 +42,19 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
+  overflow: hidden; /* Keeps the moving background container perfectly clipped */
+}
+
+/* Dedicated background layer: completely isolated from the chess mechanics */
+#app::before {
+  content: "";
+  position: absolute;
+  top: -120px;
+  left: -120px;
+  width: calc(100% + 240px);
+  height: calc(100% + 240px);
+  z-index: -1;
+  pointer-events: none;
   
   /* Seamless dual-gradient checkerboard grid */
   background-color: #a9a9a9;
@@ -48,27 +62,21 @@ body {
     linear-gradient(45deg, rgba(255, 255, 255, 0.12) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.12) 75%),
     linear-gradient(45deg, rgba(255, 255, 255, 0.12) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.12) 75%);
   background-size: 120px 120px;
+  background-position: 0 0, 60px 60px;
   
-  /* Smooth drifting effect across the viewport */
+  /* Forces the mobile phone's GPU to render the movement */
   animation: chessBoxDrift 20s linear infinite;
+  will-change: transform;
 }
 
-/* Perfect alignment translation so boxes loop seamlessly forever */
+/* 3D Transform translation makes mobile browsers slide the layer effortlessly */
 @keyframes chessBoxDrift {
   0% {
-    background-position: 0 0, 60px 60px;
+    transform: translate3d(0, 0, 0);
   }
   100% {
-    background-position: 120px 120px, 180px 180px;
+    transform: translate3d(120px, 120px, 0);
   }
-}
-#app {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
 }
 
 .screen { 
