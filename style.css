@@ -1,7 +1,6 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Updated to Gray #a9a9a9 and White #f5f5f5 theme */
   --bg-color: #a9a9a9;
   --panel-bg: #f5f5f5;
   --fg: #111111;
@@ -27,13 +26,10 @@ html, body {
   touch-action: none; 
   color: var(--fg);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, sans-serif;
+  background-color: var(--bg-color);
 }
 
 /* ---------- Mobile-Optimized Hardware-Accelerated Chess Background ---------- */
-body {
-  background-color: #a9a9a9;
-}
-
 #app {
   height: 100vh;
   width: 100vw;
@@ -42,43 +38,36 @@ body {
   justify-content: center;
   position: relative;
   overflow: hidden; 
-  isolation: isolate; /* FIX: Prevents the background pattern from falling behind the body color */
+  isolation: isolate; /* Locks layers to fix invisibility bug */
 }
 
-/* Dedicated background layer: completely isolated from the chess mechanics */
+/* Dedicated background layer: hardware accelerated for phones */
 #app::before {
   content: "";
   position: absolute;
-  top: -120px;
-  left: -120px;
-  width: calc(100% + 240px);
-  height: calc(100% + 240px);
-  z-index: -1; /* Positioned safely between the gray color and your game cards */
+  top: -160px;
+  left: -160px;
+  width: calc(100% + 320px);
+  height: calc(100% + 320px);
+  z-index: -1; 
   pointer-events: none;
   
-  /* Seamless dual-gradient checkerboard grid */
-  background-color: #a9a9a9;
   background-image: 
-    linear-gradient(45deg, rgba(255, 255, 255, 0.12) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.12) 75%),
-    linear-gradient(45deg, rgba(255, 255, 255, 0.12) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.12) 75%);
-  background-size: 120px 120px;
-  background-position: 0 0, 60px 60px;
+    linear-gradient(45deg, rgba(255, 255, 255, 0.08) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.08) 75%),
+    linear-gradient(45deg, rgba(255, 255, 255, 0.08) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.08) 75%);
+  background-size: 80px 80px;
+  background-position: 0 0, 40px 40px;
   
-  /* Forces the mobile phone's GPU to render the movement smoothly */
-  animation: chessBoxDrift 20s linear infinite;
+  animation: chessBoxDrift 16s linear infinite;
   will-change: transform;
 }
 
-/* 3D Transform translation makes mobile browsers slide the layer effortlessly */
 @keyframes chessBoxDrift {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(120px, 120px, 0);
-  }
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(80px, 80px, 0); }
 }
 
+/* ---------- UI & Screens ---------- */
 .screen { 
   display: none; 
   width: 100%; 
@@ -89,7 +78,6 @@ body {
 }
 .screen.active { display: flex; }
 
-/* ---------- Typography & Buttons ---------- */
 .title {
   font-size: clamp(40px, 8vw, 72px);
   letter-spacing: 12px;
@@ -112,9 +100,7 @@ body {
   text-transform: uppercase;
   transition: all 0.2s ease;
 }
-.primary-btn:hover { 
-  background: var(--accent-hover);
-}
+.primary-btn:hover { background: var(--accent-hover); }
 
 .ghost-btn {
   background: var(--panel-bg);
@@ -135,46 +121,23 @@ body {
 
 /* ---------- Main Menu ---------- */
 .menu-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 24px;
-  width: 100%;
-  max-width: 800px;
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 24px; width: 100%; max-width: 800px;
 }
 
 .selector-card {
-  background: var(--panel-bg);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
-  width: 240px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  background: var(--panel-bg); border: 1px solid var(--border);
+  border-radius: 16px; padding: 20px; width: 240px;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.selector-label { 
-  font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); font-weight: bold;
-}
-
-.selector-controls {
-  display: flex; align-items: center; justify-content: space-between; width: 100%;
-}
-
-.arrow {
-  background: transparent; color: var(--muted); border: none;
-  font-size: 24px; cursor: pointer; padding: 8px; transition: color 0.2s;
-}
+.selector-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); font-weight: bold; }
+.selector-controls { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+.arrow { background: transparent; color: var(--muted); border: none; font-size: 24px; cursor: pointer; padding: 8px; transition: color 0.2s; }
 .arrow:hover { color: var(--accent); }
 
-.visual-preview {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 8px; min-height: 120px;
-}
-
+.visual-preview { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 120px; }
 .avatar-emoji { font-size: 64px; line-height: 1; }
 
 .board-preview-box {
@@ -192,130 +155,67 @@ body {
 .selector-value { font-size: 16px; font-weight: 700; text-align: center; color: var(--accent); }
 .selector-sub { font-size: 12px; color: var(--muted); text-align: center; }
 
-/* ---------- Menu Actions: big centered Play button, tiny Credits link ---------- */
-.menu-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  margin-top: 34px;
-}
-
-.play-btn {
-  padding: 22px 90px;
-  font-size: 20px;
-  letter-spacing: 4px;
-  border-radius: 40px;
-  box-shadow: 0 14px 34px rgba(0,0,0,0.28);
-}
+.menu-actions { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 34px; }
+.play-btn { padding: 22px 90px; font-size: 20px; letter-spacing: 4px; border-radius: 40px; box-shadow: 0 14px 34px rgba(0,0,0,0.28); }
 .play-btn:hover { transform: translateY(-2px); box-shadow: 0 18px 40px rgba(0,0,0,0.32); }
 
-.credits-btn {
-  background: transparent;
-  border: none;
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  padding: 6px 14px;
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
+.credits-btn { background: transparent; border: none; color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 6px 14px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .credits-btn:hover { color: var(--accent); }
 
 /* ---------- Main Game Layout ---------- */
-/* Lock viewport on game screen */
 body:has(#game.active) { overflow: hidden; height: 100vh; }
 body:has(#game.active) #app { height: 100vh; padding: 10px; }
-
 #game.active { position: relative; }
 
 #game.active .game-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+  width: 100%; height: 100%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 10px;
 }
 
-/* Corner navigation buttons pinned to the extreme edges of the viewport */
-.corner-btn {
-  position: fixed;
-  top: 22px;
-  width: auto;
-  z-index: 20;
-}
+.corner-btn { position: fixed; top: 22px; width: auto; z-index: 20; }
 .corner-btn.corner-left { left: 22px; }
 .corner-btn.corner-right { right: 22px; }
 
+/* Plain text Turn Indicator */
 .turn-indicator {
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  background: none;      /* Removes the button background */
-  border: none;          /* Removes the button border */
-  box-shadow: none;      /* Removes the button shadow */
-  padding: 8px 0;
+  font-size: 22px; font-weight: 800; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 3px;
+  background: none; border: none; box-shadow: none; padding: 8px 0;
 }
-/* Board flanked by the two player panels */
+
+/* Board Row Layout - PC (Horizontal) */
 .board-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  width: 100%;
-  flex: 1;
-  min-height: 0;
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px; width: 100%; flex: 1; min-height: 0;
 }
 
 .side-panel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  width: 120px;
-  flex: 0 0 auto;
-  height: 100%;
-  max-height: min(88vh, 900px);
-  padding: 10px 4px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  width: 120px; flex: 0 0 auto; height: 100%; max-height: min(88vh, 900px); padding: 10px 4px;
 }
-/* Align the player side panel to the bottom */
+/* Aligns your profile to the bottom on PC */
 .board-row .side-panel:last-child {
-  flex-direction: column-reverse;
-  justify-content: flex-start;
+  flex-direction: column-reverse; justify-content: flex-start;
 }
+
 .profile { display: flex; align-items: center; gap: 12px; }
 .profile-vertical { flex-direction: column; text-align: center; gap: 8px; }
 
 .profile-avatar {
   font-size: 24px; background: #000; border: 1px solid var(--border);
   border-radius: 50%; width: 46px; height: 46px;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 .profile-info { display: flex; flex-direction: column; align-items: center; }
 .profile-name { font-weight: 700; font-size: 13px; line-height: 1.2; }
 .profile-role { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
 
-/* Captured pieces stacked beside the board, wrapping to fit the narrow column */
 .side-captures {
-  display: flex;
-  flex-flow: row wrap;
-  gap: 2px;
-  align-items: flex-start;
-  justify-content: center;
-  width: 100%;
-  font-size: 22px;
-  overflow: hidden;
+  display: flex; flex-flow: row wrap; gap: 2px; align-items: flex-start;
+  justify-content: center; width: 100%; font-size: 22px; overflow: hidden;
 }
 
-/* ---------- Chess Board ---------- */
+/* Maximized Board */
 .board-wrap {
   flex: 0 0 auto;
   width: min(calc(100vw - 300px), 88vh, 920px);
@@ -324,69 +224,31 @@ body:has(#game.active) #app { height: 100vh; padding: 10px; }
 
 #board {
   width: 100%; height: 100%; display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(8, 1fr);
+  grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr);
   border-radius: 8px; border: 2px solid var(--border);
   overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,0.8);
   user-select: none; position: relative;
 }
 
-.sq {
-  position: relative; display: flex; align-items: center; justify-content: center;
-  font-size: min(10vw, 8.5vh, 96px); cursor: pointer; line-height: 1;
-}
+.sq { position: relative; display: flex; align-items: center; justify-content: center; font-size: min(10vw, 8.5vh, 96px); cursor: pointer; line-height: 1; }
 .sq.light { background: var(--light); }
 .sq.dark  { background: var(--dark); }
 
-.sq.selected::after {
-  content: ""; position: absolute; inset: 0; background: var(--highlight); pointer-events: none;
-}
-.sq.last::after {
-  content: ""; position: absolute; inset: 0; background: var(--last); pointer-events: none;
-}
-.sq.move-dot::before {
-  content: ""; position: absolute; width: 25%; height: 25%; background: var(--move-dot);
-  border-radius: 50%; pointer-events: none;
-}
-.sq.move-capture::before {
-  content: ""; position: absolute; inset: 4%; border: 5px solid var(--move-dot);
-  border-radius: 50%; pointer-events: none;
-}
+.sq.selected::after { content: ""; position: absolute; inset: 0; background: var(--highlight); pointer-events: none; }
+.sq.last::after { content: ""; position: absolute; inset: 0; background: var(--last); pointer-events: none; }
+.sq.move-dot::before { content: ""; position: absolute; width: 25%; height: 25%; background: var(--move-dot); border-radius: 50%; pointer-events: none; }
+.sq.move-capture::before { content: ""; position: absolute; inset: 4%; border: 5px solid var(--move-dot); border-radius: 50%; pointer-events: none; }
 .sq.check { box-shadow: inset 0 0 0 4px var(--check); }
 
-/* ---------- Pieces - Perfect Solid Colors ---------- */
-.piece { 
-  position: relative; 
-  z-index: 1; 
-  font-family: "Arial", sans-serif; /* Ensures shapes render as solid */
-}
+.piece { position: relative; z-index: 1; font-family: "Arial", sans-serif; }
 .sq:hover .piece { transform: scale(1.1); transition: transform 0.15s ease-out; }
+.piece.white { color: #ffffff; -webkit-text-stroke: 1px #000000; text-shadow: 0 4px 6px rgba(0,0,0,0.6); }
+.piece.black { color: #000000; -webkit-text-stroke: 0px; text-shadow: 0 4px 6px rgba(255,255,255,0.25); }
 
-/* White pieces: Solid White fill, tiny 1px black outline */
-.piece.white { 
-  color: #ffffff; 
-  -webkit-text-stroke: 1px #000000; 
-  text-shadow: 0 4px 6px rgba(0,0,0,0.6);
-}
-
-/* Black pieces: 100% Solid Black fill, NO outline, NO empty space */
-.piece.black { 
-  color: #000000; 
-  -webkit-text-stroke: 0px; /* Removed outline entirely */
-  text-shadow: 0 4px 6px rgba(255,255,255,0.25);
-}
 /* ---------- Modals ---------- */
-.modal {
-  position: fixed; inset: 0; background: rgba(169, 169, 169, 0.8); backdrop-filter: blur(4px);
-  display: flex; align-items: center; justify-content: center; z-index: 100;
-}
+.modal { position: fixed; inset: 0; background: rgba(169, 169, 169, 0.8); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 100; }
 .modal.hidden { display: none; } 
-
-.modal-content {
-  background: var(--panel-bg); border: 2px solid var(--border);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3); padding: 30px; border-radius: 16px;
-  text-align: center; max-width: 90vw; width: 400px; color: var(--fg);
-}
+.modal-content { background: var(--panel-bg); border: 2px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.3); padding: 30px; border-radius: 16px; text-align: center; max-width: 90vw; width: 400px; color: var(--fg); }
 .modal-content h2 { margin-bottom: 20px; font-size: 24px; text-transform: uppercase; color: var(--accent); }
 .modal-content p { margin-bottom: 20px; color: var(--muted); font-weight: bold; }
 
@@ -395,70 +257,48 @@ body:has(#game.active) #app { height: 100vh; padding: 10px; }
 .credits-text a { color: var(--accent); font-weight: bold; }
 
 .promo-options { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
-.promo {
-  width: 60px; height: 60px; font-size: 40px; background: var(--bg-color); color: var(--fg);
-  border: 2px solid var(--border); border-radius: 8px; cursor: pointer;
-}
+.promo { width: 60px; height: 60px; font-size: 40px; background: var(--bg-color); color: var(--fg); border: 2px solid var(--border); border-radius: 8px; cursor: pointer; }
 .promo:hover { border-color: var(--accent); transform: scale(1.05); }
 
 .end-buttons { display: flex; gap: 10px; justify-content: center; }
 
-/* ---------- MOBILE RESPONSIVENESS ---------- */
+/* ---------- PERFECT MOBILE RESPONSIVENESS ---------- */
 @media (max-width: 768px) {
-  .corner-btn {
-    top: 10px;
-    font-size: 10px;
-    padding: 8px 10px;
-  }
+  .corner-btn { top: 10px; font-size: 10px; padding: 8px 10px; }
   .corner-btn.corner-left { left: 10px; }
   .corner-btn.corner-right { right: 10px; }
+  .turn-indicator { font-size: 14px; padding: 4px 0; }
 
-  .turn-indicator {
-    font-size: 11px;
-    padding: 4px 12px;
-  }
-
+  /* Change layout to Vertical Stack for Mobile */
   .board-row {
-    gap: 6px;
-  }
-
-  .side-panel {
-    width: 58px;
-    gap: 8px;
-    padding: 4px 2px;
-  }
-
-  .profile-avatar {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
-  }
-  .profile-name {
-    font-size: 9px;
-  }
-  .profile-role {
-    font-size: 7px;
-  }
-
-  .side-captures {
-    font-size: 13px;
-  }
-
-  .board-wrap {
-    width: min(calc(100vw - 140px), 80vh, 920px);
-  }
-
-  .menu-grid {
+    flex-direction: column;
+    justify-content: center;
     gap: 12px;
   }
-  .selector-card {
-    width: 45vw;
-    min-width: 150px;
-    padding: 12px;
+  
+  /* Make side panels horizontal strips above/below board */
+  .side-panel {
+    flex-direction: row !important;
+    width: min(95vw, 60vh); /* Match board width perfectly */
+    height: auto;
+    max-height: none;
+    padding: 0 8px;
+    justify-content: space-between !important;
+  }
+  
+  .profile-vertical { flex-direction: row; text-align: left; }
+  .profile-avatar { width: 34px; height: 34px; font-size: 16px; }
+  .profile-name { font-size: 14px; }
+  .profile-role { display: none; } /* Hide role labels to save space */
+  
+  .side-captures { justify-content: flex-end; font-size: 16px; width: auto; max-width: 50vw; }
+
+  /* Huge full-width board */
+  .board-wrap {
+    width: min(95vw, 60vh); 
   }
 
-  .play-btn {
-    padding: 16px 56px;
-    font-size: 16px;
-  }
+  .menu-grid { gap: 12px; }
+  .selector-card { width: 45vw; min-width: 150px; padding: 12px; }
+  .play-btn { padding: 16px 56px; font-size: 16px; }
 }
