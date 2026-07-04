@@ -2,7 +2,7 @@
 
 A modern, lightweight web chess experience with customizable opponents, board themes, and player options. Play instantly in your browser with a clean interface and smooth gameplay.
 
-📱 **Play Online on Vercel:** [Live Demo](https://chess-hemanth15.vercel.app)
+📱 **Play Online on Vercel:** [Live Demo](https://chess-zeta-opal.vercel.app/)
 
 ## 🚀 Introduction
 
